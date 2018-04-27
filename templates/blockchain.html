@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+   <body>
+        <section id="blockchain">
+                {% for block in data %}
+                    <div class=block>
+                        <ul>
+                            <li>
+                                Index:
+                                {{ block.index }}                    
+                            </li>
+                            <li>
+                                Hash:
+                                {{ block.hash }}                    
+                            </li>
+                            <li>
+                                Data:
+                                {{ block.data }}                    
+                            </li>
+                            <li>
+                                Hash Anterior:
+                                {{ block.previous_hash }}                    
+                            </li>
+                            <li>
+                                Timestamp:
+                                {{ block.timestamp }}                    
+                            </li>
+                        </ul>
+                    </div>
+                {% endfor %}
+            </section>
+   </body>
+</html>

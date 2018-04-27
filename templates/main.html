@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+   <body>
+        <section class="blockchain-page">
+            <h1>Hello {{ name }}!</h1>
+            <button type="button" id="clickMe">Enable</button>
+            <section id="blockchain"></section>
+        </section>
+        <script>
+            blockVar = false;
+            document.getElementById("clickMe").onclick = function () { 
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/chain');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                blockVar ? xhr.send({'block':blockVar}) : xhr.send(null); 
+                xhr.onreadystatechange = function () {
+                    var DONE = 4; // readyState 4 means the request is done.
+                    var OK = 200; // status 200 is a successful return.
+                    if (xhr.readyState === DONE) {
+                        if (xhr.status === OK) {
+                            blockVar = xhr.responseText;
+                            console.log(xhr.responseText); // 'This is the returned text.'
+                            var blockHTML = "<div class=block>"+
+                                                "<ul>"+
+                                                    "<li>Index:"+
+                                                    "</li>"+
+                                                    "<li>Hash:"+
+                                                    "</li>"+
+                                                    "<li>Data:"+
+                                                    "</li>"+
+                                                    "<li>Hash Anterior:"+
+                                                    "</li>"+
+                                                    "<li>Timestamp:"+
+                                                    "</li>"+
+                                                "</ul>"+
+                                            "</div>";
+                            document.getElementById("blockchain").insertAdjacentHTML("afterbegin",blockHTML);
+                        }
+                    } 
+                    else {
+                        console.log('Error: ' + xhr.status); // An error occurred during the request.
+                    }
+                }
+            };
+        </script>
+   </body>
+</html>
