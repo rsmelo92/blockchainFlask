@@ -1,0 +1,38 @@
+.block{
+    display: inline-block!important;    
+    border: solid 1px;
+    position: relative;
+    padding: 40px 8px;
+    margin-top: 10px;
+}
+.block li{
+    list-style: none!important;
+}
+.index-holder{
+    position: absolute;
+    top:4px;
+    right: 4px;
+}
+.hash{
+    word-wrap: break-word;
+    font-size: 12px;
+    width:130px;
+    margin: 0 auto;
+}
+.hash.prev{
+    margin-right: 5px;
+}
+.hash.self{
+    margin-left: 5px;
+}
+.block-content{
+    display: inline-block;
+    width: 50%;
+    margin-bottom: 22px;
+}
+.time{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: 12px;
+}

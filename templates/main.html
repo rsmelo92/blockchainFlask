@@ -1,15 +1,16 @@
 <!doctype html>
 <html>
     <head>
+        <link rel="stylesheet" href= "{{ url_for('static',filename='styles/main.css') }}">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
    <body>
         <section class="blockchain-page">
-            <h1>Hello!</h1>
+            <h1>Python Blockchain!</h1>
             <form method="POST" id="sendBlock">
                 <label for="">Conteúdo do bloco</label>
                 <input id="newValue" type="text" name="test">
-                <button>Send</button>
+                <button>Enviar</button>
             </form>
             <section id="blockchain"></section>
             <!-- Hiden genesis block -->
@@ -30,26 +31,29 @@
                     }).done((data)=>{
                         blockVar = data;
                         console.log(blockVar);
-                        let blockHTML = "<div class=block>"+
-                                            "<ul>"+
-                                                "<li>Index:"+
-                                                blockVar.index+
-                                                "</li>"+
-                                                "<li>Hash:"+
-                                                blockVar.hash+
-                                                "</li>"+
-                                                "<li>Data:"+
+                        let blockHTML = "<div class='block'>"+
+                                            "<div class='block-content'>Hash Anterior:"+
+                                                "<div class='hash prev'>"+
+                                                    blockVar.previous_hash+
+                                                "</div>"+
+                                            "</div>"+
+                                            "<div class='block-content'>Hash:"+
+                                                "<div class='hash self'>"+
+                                                    blockVar.hash+
+                                                "</div>"+
+                                            "</div>"+
+                                            "<div>Data:"+
                                                 blockVar.data+
-                                                "</li>"+
-                                                "<li>Hash Anterior:"+
-                                                blockVar.previous_hash+
-                                                "</li>"+
-                                                "<li>Timestamp:"+
+                                            "</div>"+
+                                            "<div class='index-holder'>Index:"+
+                                                blockVar.index+
+                                            "</div>"+
+                                            "<div class='time'>Timestamp:"+
                                                 blockVar.timestamp+
-                                                "</li>"+
-                                            "</ul>"+
+                                            "</div>"+
                                         "</div>";
-                        $('#blockchain').append(blockHTML)
+                        $('#blockchain').append(blockHTML);
+                        $('#newValue').val('');
                     });
                 });
             });
