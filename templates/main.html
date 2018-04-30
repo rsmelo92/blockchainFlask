@@ -1,47 +1,104 @@
 <!doctype html>
 <html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
    <body>
         <section class="blockchain-page">
-            <h1>Hello {{ name }}!</h1>
-            <button type="button" id="clickMe">Enable</button>
+            <h1>Hello!</h1>
+            <form method="POST" id="sendBlock">
+                <label for="">Conteúdo do bloco</label>
+                <input id="newValue" type="text" name="test">
+                <button>Send</button>
+            </form>
             <section id="blockchain"></section>
+            <!-- Hiden genesis block -->
+            <textarea id="genesisBlock" hidden>{{genesis.data}}</textarea>
+            
         </section>
+        
         <script>
-            blockVar = false;
+            $(document).ready(()=>{
+                var blockVar = JSON.parse($('#genesisBlock').val());
+                $('#sendBlock').on('submit',(e)=>{
+                    e.preventDefault();
+                    blockVar['data'] = e.currentTarget[0].value;
+                    console.log("blockVar", blockVar);
+                    $.ajax({
+                        data:blockVar,
+                        type:'POST',
+                        url: '/chain'
+                    }).done((data)=>{
+                        blockVar = data;
+                        console.log(blockVar);
+                        let blockHTML = "<div class=block>"+
+                                            "<ul>"+
+                                                "<li>Index:"+
+                                                blockVar.index+
+                                                "</li>"+
+                                                "<li>Hash:"+
+                                                blockVar.hash+
+                                                "</li>"+
+                                                "<li>Data:"+
+                                                blockVar.data+
+                                                "</li>"+
+                                                "<li>Hash Anterior:"+
+                                                blockVar.previous_hash+
+                                                "</li>"+
+                                                "<li>Timestamp:"+
+                                                blockVar.timestamp+
+                                                "</li>"+
+                                            "</ul>"+
+                                        "</div>";
+                        $('#blockchain').append(blockHTML)
+                    });
+                });
+            });
+        
+        </script>
+        
+        <!-- <script>
+            let blockVar = null;
             document.getElementById("clickMe").onclick = function () { 
-                var xhr = new XMLHttpRequest();
+                console.log("blockvar", blockVar);
+                console.log("blockvar string", JSON.stringify(blockVar));
+                let xhr = new XMLHttpRequest();
+                
                 xhr.open('GET', '/chain');
-                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                blockVar ? xhr.send({'block':blockVar}) : xhr.send(null); 
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send(blockVar); 
+                
                 xhr.onreadystatechange = function () {
-                    var DONE = 4; // readyState 4 means the request is done.
-                    var OK = 200; // status 200 is a successful return.
-                    if (xhr.readyState === DONE) {
-                        if (xhr.status === OK) {
-                            blockVar = xhr.responseText;
-                            console.log(xhr.responseText); // 'This is the returned text.'
-                            var blockHTML = "<div class=block>"+
+                    const DONE = 4; // readyState 4 means the request is done.
+                    if (xhr.readyState === DONE && xhr.status === 200) {
+                            blockVar = JSON.parse(xhr.responseText);
+                            console.log(blockVar);
+                            let blockHTML = "<div class=block>"+
                                                 "<ul>"+
                                                     "<li>Index:"+
+                                                    blockVar.index+
                                                     "</li>"+
                                                     "<li>Hash:"+
+                                                    blockVar.hash+
                                                     "</li>"+
                                                     "<li>Data:"+
+                                                    blockVar.data+
                                                     "</li>"+
                                                     "<li>Hash Anterior:"+
+                                                    blockVar.previous_hash+
                                                     "</li>"+
                                                     "<li>Timestamp:"+
+                                                    blockVar.timestamp+
                                                     "</li>"+
                                                 "</ul>"+
                                             "</div>";
                             document.getElementById("blockchain").insertAdjacentHTML("afterbegin",blockHTML);
-                        }
                     } 
                     else {
-                        console.log('Error: ' + xhr.status); // An error occurred during the request.
+                        console.log('Error: ' + xhr.status); 
                     }
                 }
             };
-        </script>
+        </script> -->
    </body>
 </html>

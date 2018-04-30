@@ -4,10 +4,18 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return render_template('main.html')
+    # Generate genesis block on page load
+    genesis = jsonify(chain.create_genesis_block());
+    return render_template('main.html', genesis=genesis)
 
-@app.route('/chain', methods=['GET'])
+@app.route('/chain', methods=['POST'])
 def chaining():
-    data = chain.start() 
-    print request.get_json()
+    previous_block = {
+                        'index':request.form['index'],
+                        'data':request.form['data'],
+                        'hash':request.form['hash'],
+                        'timestamp':request.form['timestamp'],
+                     }
+    print("***> Enter chain route",previous_block)
+    data = chain.next_block(previous_block)
     return jsonify(data)
