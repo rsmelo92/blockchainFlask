@@ -23,7 +23,6 @@
                 $('#sendBlock').on('submit',(e)=>{
                     e.preventDefault();
                     blockVar['data'] = e.currentTarget[0].value;
-                    console.log("blockVar", blockVar);
                     $.ajax({
                         data:blockVar,
                         type:'POST',
@@ -56,49 +55,5 @@
             });
         
         </script>
-        
-        <!-- <script>
-            let blockVar = null;
-            document.getElementById("clickMe").onclick = function () { 
-                console.log("blockvar", blockVar);
-                console.log("blockvar string", JSON.stringify(blockVar));
-                let xhr = new XMLHttpRequest();
-                
-                xhr.open('GET', '/chain');
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.send(blockVar); 
-                
-                xhr.onreadystatechange = function () {
-                    const DONE = 4; // readyState 4 means the request is done.
-                    if (xhr.readyState === DONE && xhr.status === 200) {
-                            blockVar = JSON.parse(xhr.responseText);
-                            console.log(blockVar);
-                            let blockHTML = "<div class=block>"+
-                                                "<ul>"+
-                                                    "<li>Index:"+
-                                                    blockVar.index+
-                                                    "</li>"+
-                                                    "<li>Hash:"+
-                                                    blockVar.hash+
-                                                    "</li>"+
-                                                    "<li>Data:"+
-                                                    blockVar.data+
-                                                    "</li>"+
-                                                    "<li>Hash Anterior:"+
-                                                    blockVar.previous_hash+
-                                                    "</li>"+
-                                                    "<li>Timestamp:"+
-                                                    blockVar.timestamp+
-                                                    "</li>"+
-                                                "</ul>"+
-                                            "</div>";
-                            document.getElementById("blockchain").insertAdjacentHTML("afterbegin",blockHTML);
-                    } 
-                    else {
-                        console.log('Error: ' + xhr.status); 
-                    }
-                }
-            };
-        </script> -->
    </body>
 </html>
