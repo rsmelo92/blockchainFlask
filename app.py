@@ -16,6 +16,5 @@ def chaining():
                         'hash':request.form['hash'],
                         'timestamp':request.form['timestamp'],
                      }
-    print("***> Enter chain route",previous_block)
     data = chain.next_block(previous_block)
     return jsonify(data)
