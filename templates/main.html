@@ -10,24 +10,29 @@
             <form method="POST" id="sendBlock">
                 <label for="">Conteúdo do bloco</label>
                 <input id="newValue" type="text" name="test">
+                <!-- <select name="operation" id="newValue">
+                    <option value=""></option>
+                </select> -->
                 <button>Enviar</button>
             </form>
             <section id="blockchain"></section>
             <!-- Hiden genesis block -->
             <textarea id="genesisBlock" hidden>{{genesis.data}}</textarea>
+            <input hidden id="paramURL" type="text" value="{{param}}">
             
         </section>
         
         <script>
             $(document).ready(()=>{
-                var blockVar = JSON.parse($('#genesisBlock').val());
+                let blockVar = JSON.parse($('#genesisBlock').val());
+                let param = $('#paramURL').val();
                 $('#sendBlock').on('submit',(e)=>{
                     e.preventDefault();
                     blockVar['data'] = e.currentTarget[0].value;
                     $.ajax({
                         data:blockVar,
                         type:'POST',
-                        url: '/chain'
+                        url: '/chain/' + param
                     }).done((data)=>{
                         blockVar = data;
                         console.log(blockVar);
