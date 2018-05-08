@@ -1,4 +1,5 @@
 import hashlib as hasher
+import hash as hash
 import datetime as date
 import json
 
@@ -10,11 +11,18 @@ class Block:
     self.data           = data
     self.previous_hash  = previous_hash
     self.hash           = self.hash_block()
+
   
   def hash_block(self):
     sha = hasher.sha256()
-    sha.update(str(self.index) + str(self.timestamp) + str(self.data) + str(self.previous_hash))
-    return sha.hexdigest()
+
+    def str_encode(string):
+      return str(string).encode('utf-8')
+
+    hash_string = str_encode(str(self.index) + str(self.timestamp) + str(self.data) + str(self.previous_hash))
+    obj = hash.hash_functions(hash_string, 'md5')
+    return obj['hex_digested_hash'] 
+
 
 # Generate genesis block
 def create_genesis_block():
