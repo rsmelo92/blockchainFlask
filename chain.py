@@ -12,14 +12,14 @@ class Block:
     self.previous_hash  = previous_hash
     self.hash           = self.hash_block()
 
-  
+  def str_encode(self, string):
+    return str(string).encode('utf-8')
+
   def hash_block(self):
-    sha = hasher.sha256()
-
-    def str_encode(string):
-      return str(string).encode('utf-8')
-
-    hash_string = str_encode(str(self.index) + str(self.timestamp) + str(self.data) + str(self.previous_hash))
+    #sha = hasher.sha256()
+    #sha.update(str(self.index) + str(self.timestamp) + str(self.data) + str(self.previous_hash))
+    #return sha.hexdigest()
+    hash_string = self.str_encode(str(self.index) + str(self.timestamp) + str(self.data) + str(self.previous_hash))
     obj = hash.hash_functions(hash_string, 'md5')
     return obj['hex_digested_hash'] 
 
