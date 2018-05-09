@@ -71,8 +71,8 @@ def hash_functions(string, type):
         this_copy = ripemd.copy()
 
     else :
-        print('this method '+type+' is not listed')
-        return 'false'
+        print('this method ',type,' is not listed')
+        return True
 
     hash_object =   {
                         #'digested_hash': this_digested,
