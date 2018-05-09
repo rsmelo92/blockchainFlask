@@ -1,20 +1,33 @@
 import hashlib as hash
 import json
 
-hash_types = {
+hash_types = {  
+                'modular': 'modular',
                 'md5': 'md5',
                 'sha1':'sha1',
                 'sha224':'sha224',
                 'sha256':'sha256',
                 'sha384':'sha384',
-                'sha512':'sha512'
+                'sha512':'sha512',
+                'ripemd': 'ripempd'
             }   
 
 def str_encode(string):
     return str(string).encode('utf-8')
 
 def hash_functions(string, type):
-    if type == 'md5':
+
+    if type == 'modular':
+        M = 31
+        som = 0
+        for ch in string:
+            som += ord(ch)*4
+            
+        mod = som % M
+        this_hexdigested = mod
+        this_copy = som
+
+    elif type == 'md5':
         md5 = hash.md5(str_encode(string))
         this_digested = md5.digest()
         this_hexdigested = md5.hexdigest()
@@ -50,11 +63,19 @@ def hash_functions(string, type):
         this_hexdigested = sha512.hexdigest()
         this_copy = sha512.copy()
 
+    elif type == 'ripemd':
+        ripemd = hash.new('ripemd160')
+        ripemd.update(string)
+        #this_digested = ripemd.digest()
+        this_hexdigested = ripemd.hexdigest()
+        this_copy = ripemd.copy()
+
     else :
-        return print('this method '+type+' is not listed')
+        print('this method '+type+' is not listed')
+        return 'false'
 
     hash_object =   {
-                        'digested_hash': this_digested,
+                        #'digested_hash': this_digested,
                         'hex_digested_hash': this_hexdigested,
                         'data':string,
                         'clone': this_copy,
@@ -65,4 +86,4 @@ def hash_functions(string, type):
 
 def show_examples(string):
     for tp in hash_types:
-        print(hash_functions(string, tp))
+        print(hash_functions(str_encode(string), tp))
